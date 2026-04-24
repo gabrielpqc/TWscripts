@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWscripts Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ─────────────────────────────── */
+    :root {
+      --tw-bg-base:         #090D18;
+      --tw-bg-surface:      #111827;
+      --tw-bg-elevated:     #1C2333;
+      --tw-bg-hover:        #243048;
+      --tw-accent:          #00C8FF;
+      --tw-accent-dim:      #0A8EBF;
+      --tw-amber:           #F59E0B;
+      --tw-amber-dim:       #92600A;
+      --tw-text-primary:    #E8EDF5;
+      --tw-text-secondary:  #8899BB;
+      --tw-text-disabled:   #4A5568;
+      --tw-border:          #2A3550;
+      --tw-border-strong:   #3D4F72;
+      --tw-success:         #22C55E;
+      --tw-danger:          #EF4444;
+      --tw-danger-dim:      #7F1D1D;
+      --tw-font-heading:    'Space Grotesk', system-ui, sans-serif;
+      --tw-font-body:       'IBM Plex Sans', system-ui, sans-serif;
+      --tw-font-mono:       'JetBrains Mono', 'Fira Code', monospace;
+      --tw-radius-sm:       3px;
+      --tw-radius:          6px;
+      --tw-radius-lg:       10px;
+      --tw-space-1: 4px; --tw-space-2: 8px; --tw-space-3: 12px;
+      --tw-space-4: 16px; --tw-space-6: 24px; --tw-space-8: 32px;
+      --tw-shadow-sm:       0 1px 3px rgba(0,0,0,0.4);
+      --tw-shadow:          0 4px 12px rgba(0,0,0,0.5);
+      --tw-shadow-lg:       0 8px 24px rgba(0,0,0,0.6);
+      --tw-glow-cyan:       0 0 12px rgba(0, 200, 255, 0.25);
+      --tw-glow-amber:      0 0 12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* ── Page base ──────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--tw-bg-base);
+      color: var(--tw-text-primary);
+      font-family: var(--tw-font-body);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ─────────────────────────────── */
+    .page-header {
+      border-bottom: 1px solid var(--tw-border);
+      background: var(--tw-bg-surface);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .page-header .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--tw-accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-family: var(--tw-font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .page-header h1 {
+      font-family: var(--tw-font-heading);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--tw-text-primary);
+    }
+    .page-header .version {
+      font-family: var(--tw-font-mono);
+      font-size: 11px;
+      color: var(--tw-text-secondary);
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border);
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: auto;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* ── Sidebar nav ────────────────────────── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--tw-border);
+      padding: 24px 0;
+      position: sticky;
+      top: 65px;
+      height: calc(100vh - 65px);
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+    .sidebar-label {
+      font-family: var(--tw-font-heading);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tw-text-disabled);
+      padding: 0 8px;
+      margin-bottom: 6px;
+    }
+    .sidebar a {
+      display: block;
+      font-size: 13px;
+      color: var(--tw-text-secondary);
+      text-decoration: none;
+      padding: 5px 8px;
+      border-radius: var(--tw-radius-sm);
+      transition: all 150ms ease;
+    }
+    .sidebar a:hover {
+      color: var(--tw-text-primary);
+      background: var(--tw-bg-hover);
+    }
+    .sidebar a.active {
+      color: var(--tw-accent);
+      background: rgba(0, 200, 255, 0.08);
+    }
+
+    /* ── Main content ───────────────────────── */
+    .content {
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 900px;
+    }
+
+    /* ── Section ────────────────────────────── */
+    .section {
+      margin-bottom: 56px;
+    }
+    .section-title {
+      font-family: var(--tw-font-heading);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--tw-text-primary);
+      margin-bottom: 6px;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: var(--tw-text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--tw-border);
+      margin-bottom: 56px;
+    }
+
+    /* ── Demo block ─────────────────────────── */
+    .demo-block {
+      background: var(--tw-bg-surface);
+      border: 1px solid var(--tw-border);
+      border-radius: var(--tw-radius);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .demo-block__preview {
+      padding: 32px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--tw-border);
+    }
+    .demo-block__preview--dark {
+      background: var(--tw-bg-base);
+    }
+    .demo-block__preview--center {
+      justify-content: center;
+    }
+    .demo-block__label {
+      font-family: var(--tw-font-mono);
+      font-size: 11px;
+      color: var(--tw-text-disabled);
+      padding: 8px 16px;
+      background: var(--tw-bg-elevated);
+    }
+
+    /* ── Color swatches ─────────────────────── */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+    }
+    .swatch {
+      border-radius: var(--tw-radius);
+      overflow: hidden;
+      border: 1px solid var(--tw-border);
+    }
+    .swatch__color {
+      height: 60px;
+    }
+    .swatch__info {
+      padding: 8px 10px;
+      background: var(--tw-bg-surface);
+    }
+    .swatch__name {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--tw-font-heading);
+      color: var(--tw-text-primary);
+      margin-bottom: 2px;
+    }
+    .swatch__hex {
+      font-family: var(--tw-font-mono);
+      font-size: 10px;
+      color: var(--tw-text-secondary);
+    }
+
+    /* ── Typography scale ───────────────────── */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--tw-border);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-row__label {
+      font-family: var(--tw-font-mono);
+      font-size: 10px;
+      color: var(--tw-text-disabled);
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .type-row__sample {
+      color: var(--tw-text-primary);
+    }
+
+    /* ── Components ─────────────────────────── */
+    .tw-panel {
+      background: var(--tw-bg-surface);
+      border: 1px solid var(--tw-border);
+      border-radius: var(--tw-radius);
+      padding: var(--tw-space-4);
+    }
+    .tw-panel--accent { border-left: 3px solid var(--tw-accent); }
+    .tw-panel--amber  { border-left: 3px solid var(--tw-amber); }
+    .tw-panel--danger { border-left: 3px solid var(--tw-danger); }
+    .tw-panel--success{ border-left: 3px solid var(--tw-success); }
+    .tw-panel__title {
+      font-family: var(--tw-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .tw-panel__body {
+      font-size: 13px;
+      color: var(--tw-text-secondary);
+    }
+
+    .tw-btn {
+      font-family: var(--tw-font-body);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: var(--tw-radius-sm);
+      cursor: pointer;
+      transition: all 150ms ease;
+      border: none;
+      outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.4;
+    }
+    .tw-btn--primary { background: var(--tw-accent); color: #000; }
+    .tw-btn--primary:hover { background: #1AD6FF; box-shadow: var(--tw-glow-cyan); }
+    .tw-btn--primary:active { transform: scale(.97); }
+    .tw-btn--ghost { background: transparent; color: var(--tw-text-secondary); border: 1px solid var(--tw-border); }
+    .tw-btn--ghost:hover { border-color: var(--tw-accent-dim); color: var(--tw-text-primary); }
+    .tw-btn--danger { background: var(--tw-danger); color: #fff; }
+    .tw-btn--danger:hover { background: #F87171; }
+    .tw-btn--amber  { background: var(--tw-amber); color: #000; }
+    .tw-btn--amber:hover { background: #FBBF24; box-shadow: var(--tw-glow-amber); }
+    .tw-btn--success{ background: var(--tw-success); color: #000; }
+    .tw-btn--sm { font-size: 11px; padding: 4px 10px; }
+    .tw-btn--lg { font-size: 15px; padding: 9px 20px; }
+    .tw-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .tw-input, .tw-select {
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border);
+      border-radius: var(--tw-radius-sm);
+      color: var(--tw-text-primary);
+      font-family: var(--tw-font-body);
+      font-size: 13px;
+      padding: 6px 10px;
+      transition: border-color 150ms ease;
+      width: 100%;
+    }
+    .tw-input:focus, .tw-select:focus {
+      outline: none;
+      border-color: var(--tw-accent-dim);
+      box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.12);
+    }
+    .tw-input::placeholder { color: var(--tw-text-disabled); }
+    .tw-input--error { border-color: var(--tw-danger); }
+    .tw-input--error:focus { box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.12); }
+    .tw-label {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--tw-font-heading);
+      color: var(--tw-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .tw-form-group { display: flex; flex-direction: column; gap: 5px; }
+    .tw-hint { font-size: 11px; color: var(--tw-text-disabled); }
+    .tw-hint--error { color: var(--tw-danger); }
+
+    .tw-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tw-table th {
+      font-family: var(--tw-font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--tw-accent);
+      border-bottom: 1px solid var(--tw-border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .tw-table td { padding: 8px 12px; border-bottom: 1px solid var(--tw-border); color: var(--tw-text-primary); }
+    .tw-table tr:last-child td { border-bottom: none; }
+    .tw-table tr:hover td { background: var(--tw-bg-hover); }
+    .tw-table .mono { font-family: var(--tw-font-mono); font-size: 11px; color: var(--tw-text-secondary); }
+
+    .tw-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-family: var(--tw-font-mono);
+    }
+    .tw-badge--cyan  { background: rgba(0,200,255,.12); color: var(--tw-accent);   border: 1px solid rgba(0,200,255,.2); }
+    .tw-badge--amber { background: rgba(245,158,11,.12); color: var(--tw-amber);    border: 1px solid rgba(245,158,11,.2); }
+    .tw-badge--green { background: rgba(34,197,94,.12);  color: var(--tw-success);  border: 1px solid rgba(34,197,94,.2); }
+    .tw-badge--red   { background: rgba(239,68,68,.12);  color: var(--tw-danger);   border: 1px solid rgba(239,68,68,.2); }
+    .tw-badge--gray  { background: rgba(136,153,187,.10); color: var(--tw-text-secondary); border: 1px solid rgba(136,153,187,.2); }
+
+    .tw-divider { border: none; border-top: 1px solid var(--tw-border); margin: 16px 0; }
+
+    .tw-modal {
+      background: var(--tw-bg-surface);
+      border: 1px solid var(--tw-border-strong);
+      border-radius: var(--tw-radius-lg);
+      padding: 24px;
+      min-width: 320px;
+      max-width: 480px;
+      box-shadow: var(--tw-shadow-lg);
+    }
+    .tw-modal__header {
+      font-family: var(--tw-font-heading);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--tw-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tw-modal__close {
+      background: none;
+      border: none;
+      color: var(--tw-text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      border-radius: var(--tw-radius-sm);
+      transition: all 150ms ease;
+    }
+    .tw-modal__close:hover { background: var(--tw-bg-hover); color: var(--tw-text-primary); }
+    .tw-modal__body { font-size: 13px; color: var(--tw-text-secondary); margin-bottom: 20px; line-height: 1.6; }
+    .tw-modal__footer { display: flex; gap: 8px; justify-content: flex-end; }
+
+    .tw-toast-demo {
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border-strong);
+      border-radius: var(--tw-radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 260px;
+    }
+    .tw-toast-demo--success { border-left: 3px solid var(--tw-success); }
+    .tw-toast-demo--error   { border-left: 3px solid var(--tw-danger); }
+    .tw-toast-demo--info    { border-left: 3px solid var(--tw-accent); }
+    .tw-toast-demo--amber   { border-left: 3px solid var(--tw-amber); }
+
+    .tw-progress {
+      background: var(--tw-bg-elevated);
+      border-radius: 3px;
+      height: 6px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .tw-progress__bar {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--tw-accent);
+      transition: width 300ms ease;
+    }
+    .tw-progress__bar--amber   { background: var(--tw-amber); }
+    .tw-progress__bar--success { background: var(--tw-success); }
+    .tw-progress__bar--danger  { background: var(--tw-danger); }
+
+    .tw-stat {
+      background: var(--tw-bg-surface);
+      border: 1px solid var(--tw-border);
+      border-radius: var(--tw-radius);
+      padding: 16px;
+    }
+    .tw-stat__label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tw-text-secondary);
+      font-family: var(--tw-font-heading);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .tw-stat__value {
+      font-family: var(--tw-font-mono);
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--tw-text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .tw-stat__delta {
+      font-size: 11px;
+      font-family: var(--tw-font-mono);
+    }
+    .tw-stat__delta--up   { color: var(--tw-success); }
+    .tw-stat__delta--down { color: var(--tw-danger); }
+
+    .tw-kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--tw-font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--tw-text-secondary);
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border-strong);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 2px 6px;
+      min-width: 22px;
+    }
+
+    .tw-tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tw-code-block {
+      background: var(--tw-bg-base);
+      border: 1px solid var(--tw-border);
+      border-radius: var(--tw-radius);
+      padding: 16px;
+      font-family: var(--tw-font-mono);
+      font-size: 12px;
+      color: var(--tw-text-secondary);
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .tw-code-block .kw  { color: var(--tw-accent); }
+    .tw-code-block .str { color: var(--tw-amber); }
+    .tw-code-block .fn  { color: #C792EA; }
+    .tw-code-block .cmt { color: var(--tw-text-disabled); }
+    .tw-code-block .num { color: var(--tw-success); }
+
+    .tw-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--tw-text-primary);
+    }
+    .tw-checkbox {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--tw-accent);
+    }
+
+    .tw-toggle {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+    .tw-toggle input { opacity: 0; width: 0; height: 0; }
+    .tw-toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border-strong);
+      border-radius: 20px;
+      transition: all 200ms ease;
+      cursor: pointer;
+    }
+    .tw-toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      background: var(--tw-text-disabled);
+      border-radius: 50%;
+      transition: all 200ms ease;
+    }
+    .tw-toggle input:checked + .tw-toggle-track {
+      background: rgba(0,200,255,0.15);
+      border-color: var(--tw-accent-dim);
+    }
+    .tw-toggle input:checked + .tw-toggle-track::after {
+      left: calc(100% - 15px);
+      background: var(--tw-accent);
+    }
+
+    .tw-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899BB' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+
+    /* ── Toast live demo ────────────────────── */
+    .live-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--tw-bg-elevated);
+      border: 1px solid var(--tw-border-strong);
+      border-radius: var(--tw-radius);
+      padding: 12px 16px;
+      font-family: var(--tw-font-body);
+      font-size: 13px;
+      color: var(--tw-text-primary);
+      box-shadow: var(--tw-shadow-lg);
+      z-index: 9999;
+      display: none;
+      animation: tw-slide-in 200ms ease;
+      min-width: 220px;
+    }
+    .live-toast.show { display: flex; align-items: center; gap: 10px; }
+    .live-toast--info    { border-left: 3px solid var(--tw-accent); }
+    .live-toast--success { border-left: 3px solid var(--tw-success); }
+    .live-toast--error   { border-left: 3px solid var(--tw-danger); }
+
+    @keyframes tw-slide-in {
+      from { transform: translateX(20px); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+
+    /* ── Modal live demo ────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(2px);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+
+    /* ── Grid helpers ───────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .flex-col  { display: flex; flex-direction: column; gap: 10px; }
+
+    /* ── Scrollbar ──────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--tw-bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--tw-border-strong); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--tw-text-disabled); }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="page-header">
+  <div class="logo-icon">&lt;/&gt;</div>
+  <h1>TWscripts Design System</h1>
+  <span class="version">Dark Command v1.0</span>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Foundation</div>
+      <a href="#colors">Colors</a>
+      <a href="#typography">Typography</a>
+      <a href="#spacing">Spacing & Shape</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Components</div>
+      <a href="#panels">Panels</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#inputs">Inputs</a>
+      <a href="#select">Select</a>
+      <a href="#badges">Badges</a>
+      <a href="#table">Table</a>
+      <a href="#stats">Stat Cards</a>
+      <a href="#progress">Progress</a>
+      <a href="#modal">Modal</a>
+      <a href="#toasts">Toasts</a>
+      <a href="#kbd">Keyboard Keys</a>
+      <a href="#code">Code Block</a>
+      <a href="#toggles">Toggles & Checks</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Usage</div>
+      <a href="#injection">Injection</a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="content">
+
+    <!-- Intro -->
+    <div class="section">
+      <div class="tw-panel tw-panel--accent">
+        <div class="tw-panel__title" style="font-family: var(--tw-font-heading); font-size: 28px; font-weight: 700; color: var(--tw-text-primary); margin-bottom: 8px;">Dark Command</div>
+        <div class="tw-panel__body" style="font-size: 14px; line-height: 1.7;">
+          Design system for Tribal Wars scripts. Derived from the project icon — midnight navy backgrounds, electric cyan accent, warm amber contrast. Built for in-game UI injection. Signals craft, precision, and trust. Not decorative.
+        </div>
+        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <span class="tw-badge tw-badge--cyan">Dark Command</span>
+          <span class="tw-badge tw-badge--amber">In-game Overlay</span>
+          <span class="tw-badge tw-badge--green">Vanilla CSS/JS</span>
+          <span class="tw-badge tw-badge--gray">No Dependencies</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Colors -->
+    <div class="section" id="colors">
+      <div class="section-title">Colors</div>
+      <div class="section-desc">All surfaces dark. Cyan primary accent. Amber secondary/warning. Never use light backgrounds.</div>
+
+      <div style="margin-bottom: 20px;">
+        <div class="tw-label" style="margin-bottom: 12px;">Backgrounds</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch__color" style="background:#090D18; border-bottom:1px solid #2A3550;"></div><div class="swatch__info"><div class="swatch__name">Base</div><div class="swatch__hex">--tw-bg-base<br>#090D18</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#111827;"></div><div class="swatch__info"><div class="swatch__name">Surface</div><div class="swatch__hex">--tw-bg-surface<br>#111827</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#1C2333;"></div><div class="swatch__info"><div class="swatch__name">Elevated</div><div class="swatch__hex">--tw-bg-elevated<br>#1C2333</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#243048;"></div><div class="swatch__info"><div class="swatch__name">Hover</div><div class="swatch__hex">--tw-bg-hover<br>#243048</div></div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div class="tw-label" style="margin-bottom: 12px;">Accents</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch__color" style="background:#00C8FF;"></div><div class="swatch__info"><div class="swatch__name">Cyan</div><div class="swatch__hex">--tw-accent<br>#00C8FF</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#0A8EBF;"></div><div class="swatch__info"><div class="swatch__name">Cyan Dim</div><div class="swatch__hex">--tw-accent-dim<br>#0A8EBF</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#F59E0B;"></div><div class="swatch__info"><div class="swatch__name">Amber</div><div class="swatch__hex">--tw-amber<br>#F59E0B</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#92600A;"></div><div class="swatch__info"><div class="swatch__name">Amber Dim</div><div class="swatch__hex">--tw-amber-dim<br>#92600A</div></div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div class="tw-label" style="margin-bottom: 12px;">Semantic</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch__color" style="background:#22C55E;"></div><div class="swatch__info"><div class="swatch__name">Success</div><div class="swatch__hex">--tw-success<br>#22C55E</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#EF4444;"></div><div class="swatch__info"><div class="swatch__name">Danger</div><div class="swatch__hex">--tw-danger<br>#EF4444</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#E8EDF5;"></div><div class="swatch__info"><div class="swatch__name">Text</div><div class="swatch__hex">--tw-text-primary<br>#E8EDF5</div></div></div>
+          <div class="swatch"><div class="swatch__color" style="background:#8899BB;"></div><div class="swatch__info"><div class="swatch__name">Text Muted</div><div class="swatch__hex">--tw-text-secondary<br>#8899BB</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Typography -->
+    <div class="section" id="typography">
+      <div class="section-title">Typography</div>
+      <div class="section-desc">Space Grotesk for headings — distinctive, technical. IBM Plex Sans for body — readable, professional. JetBrains Mono for numbers and data.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; gap:0;">
+          <div class="type-row">
+            <span class="type-row__label">2xl / 700</span>
+            <span class="type-row__sample" style="font-family:var(--tw-font-heading); font-size:32px; font-weight:700;">Attack Planner</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">xl / 600</span>
+            <span class="type-row__sample" style="font-family:var(--tw-font-heading); font-size:24px; font-weight:600;">Dynamic Groups</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">lg / 600</span>
+            <span class="type-row__sample" style="font-family:var(--tw-font-heading); font-size:20px; font-weight:600;">Export Villages</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">md / 500</span>
+            <span class="type-row__sample" style="font-size:16px; font-weight:500;">Configure your script settings below</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">base / 400</span>
+            <span class="type-row__sample" style="font-size:14px;">Select villages and click export to download the CSV file</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">sm / 400</span>
+            <span class="type-row__sample" style="font-size:13px; color:var(--tw-text-secondary);">Last updated 3 minutes ago</span>
+          </div>
+          <div class="type-row">
+            <span class="type-row__label">xs mono</span>
+            <span class="type-row__sample" style="font-family:var(--tw-font-mono); font-size:11px; color:var(--tw-text-secondary);">500:123 | 1240pts | K44</span>
+          </div>
+        </div>
+        <div class="demo-block__label">Space Grotesk — headings · IBM Plex Sans — body · JetBrains Mono — data</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Spacing -->
+    <div class="section" id="spacing">
+      <div class="section-title">Spacing & Shape</div>
+      <div class="section-desc">8px base unit. 3–6px radius — sharp enough to feel like a tool, not a consumer app.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview" style="gap: 24px; align-items: flex-end;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:4px; height:4px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-1 / 4px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:8px; height:8px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-2 / 8px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:12px; height:12px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-3 / 12px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:16px; height:16px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-4 / 16px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:24px; height:24px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-6 / 24px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="background:var(--tw-accent-dim); width:32px; height:32px; border-radius:1px;"></div>
+            <span class="tw-badge tw-badge--gray">space-8 / 32px</span>
+          </div>
+        </div>
+        <div class="demo-block__preview" style="gap:16px; align-items:center;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:48px; height:32px; background:var(--tw-bg-elevated); border:1px solid var(--tw-border); border-radius:3px;"></div>
+            <span class="tw-badge tw-badge--gray">radius-sm / 3px</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:48px; height:32px; background:var(--tw-bg-elevated); border:1px solid var(--tw-border); border-radius:6px;"></div>
+            <span class="tw-badge tw-badge--gray">radius / 6px</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:48px; height:32px; background:var(--tw-bg-elevated); border:1px solid var(--tw-border); border-radius:10px;"></div>
+            <span class="tw-badge tw-badge--gray">radius-lg / 10px</span>
+          </div>
+        </div>
+        <div class="demo-block__label">spacing tokens · border-radius tokens</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Panels -->
+    <div class="section" id="panels">
+      <div class="section-title">Panels</div>
+      <div class="section-desc">Primary container. Accent stripe via left-border. Use depth with bg-surface → bg-elevated nesting.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; gap:12px;">
+
+          <div class="tw-panel">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px;">Default Panel</div>
+            <div class="tw-panel__body">Standard surface with border. Use for grouping controls.</div>
+          </div>
+
+          <div class="tw-panel tw-panel--accent">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px; color:var(--tw-accent);">Accent Panel</div>
+            <div class="tw-panel__body">Cyan left stripe. Use for active script, primary info section.</div>
+          </div>
+
+          <div class="tw-panel tw-panel--amber">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px; color:var(--tw-amber);">Warning Panel</div>
+            <div class="tw-panel__body">Amber left stripe. Use for warnings, rate limits, cooldowns.</div>
+          </div>
+
+          <div class="tw-panel tw-panel--danger">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px; color:var(--tw-danger);">Danger Panel</div>
+            <div class="tw-panel__body">Red stripe. Destructive actions, errors, failed operations.</div>
+          </div>
+
+          <div class="tw-panel tw-panel--success">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px; color:var(--tw-success);">Success Panel</div>
+            <div class="tw-panel__body">Green stripe. Completed exports, successful syncs.</div>
+          </div>
+
+          <!-- Nested panel -->
+          <div class="tw-panel tw-panel--accent">
+            <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:12px;">Nested Panels</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--tw-bg-elevated); border:1px solid var(--tw-border); border-radius:var(--tw-radius); padding:12px;">
+                <div style="font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--tw-text-secondary); font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px;">Villages</div>
+                <div style="font-family:var(--tw-font-mono); font-size:22px; font-weight:500;">142</div>
+              </div>
+              <div style="background:var(--tw-bg-elevated); border:1px solid var(--tw-border); border-radius:var(--tw-radius); padding:12px;">
+                <div style="font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--tw-text-secondary); font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px;">Groups</div>
+                <div style="font-family:var(--tw-font-mono); font-size:22px; font-weight:500;">7</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-panel · tw-panel--accent · tw-panel--amber · tw-panel--danger · tw-panel--success</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Buttons -->
+    <div class="section" id="buttons">
+      <div class="section-title">Buttons</div>
+      <div class="section-desc">Compact and purposeful. Glow only on primary. Ghost for secondary actions. Size sm for table rows.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark">
+          <button class="tw-btn tw-btn--primary">Export CSV</button>
+          <button class="tw-btn tw-btn--ghost">Cancel</button>
+          <button class="tw-btn tw-btn--danger">Delete Group</button>
+          <button class="tw-btn tw-btn--amber">Sync Villages</button>
+          <button class="tw-btn tw-btn--success">Confirm</button>
+          <button class="tw-btn tw-btn--primary" disabled>Disabled</button>
+        </div>
+        <div class="demo-block__preview demo-block--dark">
+          <div style="font-size:11px; color:var(--tw-text-disabled); width:100%; margin-bottom:4px; font-family:var(--tw-font-heading);">SIZES</div>
+          <button class="tw-btn tw-btn--primary tw-btn--sm">Small</button>
+          <button class="tw-btn tw-btn--primary">Default</button>
+          <button class="tw-btn tw-btn--primary tw-btn--lg">Large</button>
+        </div>
+        <div class="demo-block__preview demo-block--dark">
+          <div style="font-size:11px; color:var(--tw-text-disabled); width:100%; margin-bottom:4px; font-family:var(--tw-font-heading);">WITH ICONS (SVG inline)</div>
+          <button class="tw-btn tw-btn--primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <button class="tw-btn tw-btn--ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search
+          </button>
+          <button class="tw-btn tw-btn--danger">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Delete
+          </button>
+        </div>
+        <div class="demo-block__label">tw-btn · --primary · --ghost · --danger · --amber · --success · --sm · --lg</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Inputs -->
+    <div class="section" id="inputs">
+      <div class="section-title">Inputs</div>
+      <div class="section-desc">Dark elevated bg, bottom-focused border. Cyan ring on focus. Label uses small caps.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; max-width:420px;">
+          <div class="tw-form-group">
+            <label class="tw-label">Village Name</label>
+            <input class="tw-input" type="text" placeholder="e.g. KFront-001">
+          </div>
+          <div class="tw-form-group">
+            <label class="tw-label">Coordinates</label>
+            <input class="tw-input" type="text" placeholder="500|500" style="font-family:var(--tw-font-mono);">
+            <span class="tw-hint">Format: X|Y</span>
+          </div>
+          <div class="tw-form-group">
+            <label class="tw-label">Error State</label>
+            <input class="tw-input tw-input--error" type="text" value="invalid value">
+            <span class="tw-hint tw-hint--error">Value must be numeric</span>
+          </div>
+          <div class="tw-form-group">
+            <label class="tw-label">Disabled</label>
+            <input class="tw-input" type="text" value="Read only" disabled style="opacity:.4; cursor:not-allowed;">
+          </div>
+        </div>
+        <div class="demo-block__label">tw-input · tw-input--error · tw-label · tw-hint · tw-hint--error</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Select -->
+    <div class="section" id="select">
+      <div class="section-title">Select</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="max-width:320px; flex-direction:column;">
+          <div class="tw-form-group">
+            <label class="tw-label">Sort Villages By</label>
+            <select class="tw-select">
+              <option>Points (high to low)</option>
+              <option>Points (low to high)</option>
+              <option>Name A–Z</option>
+              <option>Coordinates</option>
+            </select>
+          </div>
+          <div class="tw-form-group">
+            <label class="tw-label">Target Group</label>
+            <select class="tw-select">
+              <option>Frontline</option>
+              <option>Backline</option>
+              <option>Support</option>
+            </select>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-select</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Badges -->
+    <div class="section" id="badges">
+      <div class="section-title">Badges</div>
+      <div class="section-desc">Mono font. Translucent fill. Use for status, type labels, counts.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark">
+          <span class="tw-badge tw-badge--cyan">ACTIVE</span>
+          <span class="tw-badge tw-badge--amber">COOLDOWN</span>
+          <span class="tw-badge tw-badge--green">EXPORTED</span>
+          <span class="tw-badge tw-badge--red">FAILED</span>
+          <span class="tw-badge tw-badge--gray">DISABLED</span>
+        </div>
+        <div class="demo-block__preview demo-block--dark">
+          <div style="font-size:11px; color:var(--tw-text-disabled); width:100%; margin-bottom:8px; font-family:var(--tw-font-heading);">IN CONTEXT</div>
+          <div class="tw-panel" style="width:100%;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-family:var(--tw-font-heading); font-weight:600;">Dynamic Groups Exporter</span>
+              <span class="tw-badge tw-badge--green">READY</span>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tw-badge tw-badge--cyan">v2.1.0</span>
+              <span class="tw-badge tw-badge--gray">142 villages</span>
+              <span class="tw-badge tw-badge--amber">API limited</span>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-badge · --cyan · --amber · --green · --red · --gray</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Table -->
+    <div class="section" id="table">
+      <div class="section-title">Table</div>
+      <div class="section-desc">Cyan uppercase headers. Row hover. Mono for coordinates, points, IDs.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="padding:0; flex-direction:column;">
+          <table class="tw-table">
+            <thead>
+              <tr>
+                <th>Village</th>
+                <th>Coords</th>
+                <th>Points</th>
+                <th>Group</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>KFront-001</td>
+                <td class="mono">500|499</td>
+                <td class="mono">12,400</td>
+                <td>Frontline</td>
+                <td><span class="tw-badge tw-badge--green">Active</span></td>
+                <td><button class="tw-btn tw-btn--ghost tw-btn--sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td>KFront-002</td>
+                <td class="mono">501|500</td>
+                <td class="mono">11,830</td>
+                <td>Frontline</td>
+                <td><span class="tw-badge tw-badge--green">Active</span></td>
+                <td><button class="tw-btn tw-btn--ghost tw-btn--sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td>KBack-007</td>
+                <td class="mono">488|512</td>
+                <td class="mono">9,200</td>
+                <td>Backline</td>
+                <td><span class="tw-badge tw-badge--amber">Cooldown</span></td>
+                <td><button class="tw-btn tw-btn--ghost tw-btn--sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td>Support-03</td>
+                <td class="mono">495|503</td>
+                <td class="mono">7,650</td>
+                <td>Support</td>
+                <td><span class="tw-badge tw-badge--red">Offline</span></td>
+                <td><button class="tw-btn tw-btn--ghost tw-btn--sm">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="demo-block__label">tw-table · th cyan headers · td hover · .mono for data values</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Stat cards -->
+    <div class="section" id="stats">
+      <div class="section-title">Stat Cards</div>
+      <div class="section-desc">Summary numbers. Mono font for values. Delta up/down in green/red.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark">
+          <div class="grid-4" style="width:100%;">
+            <div class="tw-stat">
+              <div class="tw-stat__label">Villages</div>
+              <div class="tw-stat__value">142</div>
+              <div class="tw-stat__delta tw-stat__delta--up">+3 this week</div>
+            </div>
+            <div class="tw-stat">
+              <div class="tw-stat__label">Groups</div>
+              <div class="tw-stat__value">7</div>
+              <div class="tw-stat__delta" style="color:var(--tw-text-disabled);">unchanged</div>
+            </div>
+            <div class="tw-stat">
+              <div class="tw-stat__label">Total Pts</div>
+              <div class="tw-stat__value" style="color:var(--tw-accent);">1.4M</div>
+              <div class="tw-stat__delta tw-stat__delta--up">+12k today</div>
+            </div>
+            <div class="tw-stat">
+              <div class="tw-stat__label">Attacks</div>
+              <div class="tw-stat__value" style="color:var(--tw-danger);">24</div>
+              <div class="tw-stat__delta tw-stat__delta--down">-8 vs avg</div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-stat · tw-stat__value · tw-stat__delta--up · tw-stat__delta--down</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Progress -->
+    <div class="section" id="progress">
+      <div class="section-title">Progress</div>
+      <div class="section-desc">For export progress, troop build timers, farm capacity.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; gap:16px; width:100%;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span style="color:var(--tw-text-secondary);">Exporting villages...</span>
+              <span style="font-family:var(--tw-font-mono); color:var(--tw-accent);">72%</span>
+            </div>
+            <div class="tw-progress"><div class="tw-progress__bar" style="width:72%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span style="color:var(--tw-text-secondary);">Farm capacity</span>
+              <span style="font-family:var(--tw-font-mono); color:var(--tw-amber);">88%</span>
+            </div>
+            <div class="tw-progress"><div class="tw-progress__bar tw-progress__bar--amber" style="width:88%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span style="color:var(--tw-text-secondary);">Synced</span>
+              <span style="font-family:var(--tw-font-mono); color:var(--tw-success);">100%</span>
+            </div>
+            <div class="tw-progress"><div class="tw-progress__bar tw-progress__bar--success" style="width:100%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span style="color:var(--tw-text-secondary);">Errors detected</span>
+              <span style="font-family:var(--tw-font-mono); color:var(--tw-danger);">34%</span>
+            </div>
+            <div class="tw-progress"><div class="tw-progress__bar tw-progress__bar--danger" style="width:34%;"></div></div>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-progress · tw-progress__bar · --amber · --success · --danger</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Modal -->
+    <div class="section" id="modal">
+      <div class="section-title">Modal / Dialog</div>
+      <div class="section-desc">Centered overlay with blur backdrop. Use for confirmations, config, export options.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark demo-block__preview--center" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); padding:40px 24px;">
+          <div class="tw-modal">
+            <div class="tw-modal__header">
+              Export Configuration
+              <button class="tw-modal__close">✕</button>
+            </div>
+            <div class="tw-modal__body">
+              Select export format and destination. This will generate a CSV file with all village data from the selected groups.
+            </div>
+            <div class="flex-col" style="margin-bottom:20px;">
+              <div class="tw-form-group">
+                <label class="tw-label">Format</label>
+                <select class="tw-select">
+                  <option>CSV (.csv)</option>
+                  <option>JSON (.json)</option>
+                  <option>BBCode (forum)</option>
+                </select>
+              </div>
+              <div class="tw-form-group">
+                <label class="tw-label">Include Fields</label>
+                <input class="tw-input" type="text" value="name, coords, points, group">
+              </div>
+            </div>
+            <div class="tw-modal__footer">
+              <button class="tw-btn tw-btn--ghost">Cancel</button>
+              <button class="tw-btn tw-btn--primary">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block__preview demo-block--dark demo-block__preview--center" style="padding:16px;">
+          <button class="tw-btn tw-btn--primary" onclick="document.getElementById('demo-modal').classList.add('show')">Open Live Modal</button>
+        </div>
+        <div class="demo-block__label">tw-modal · tw-modal__header · tw-modal__body · tw-modal__footer</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Toasts -->
+    <div class="section" id="toasts">
+      <div class="section-title">Toasts / Notifications</div>
+      <div class="section-desc">Fixed bottom-right. Left stripe signals type. Auto-dismiss. 200ms slide-in.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; gap:10px; align-items:flex-start;">
+          <div class="tw-toast-demo tw-toast-demo--info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-accent)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Syncing villages with game server…
+          </div>
+          <div class="tw-toast-demo tw-toast-demo--success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Export complete — 142 villages exported.
+          </div>
+          <div class="tw-toast-demo tw-toast-demo--error">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-danger)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            API rate limit reached. Retry in 60s.
+          </div>
+          <div class="tw-toast-demo tw-toast-demo--amber">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-amber)" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            10 villages missing from group.
+          </div>
+        </div>
+        <div class="demo-block__preview demo-block--dark demo-block__preview--center" style="padding:16px; gap:12px;">
+          <button class="tw-btn tw-btn--primary tw-btn--sm" onclick="showLiveToast('Script synced — 142 villages loaded.', 'success')">Success Toast</button>
+          <button class="tw-btn tw-btn--ghost tw-btn--sm" onclick="showLiveToast('Syncing with server…', 'info')">Info Toast</button>
+          <button class="tw-btn tw-btn--danger tw-btn--sm" onclick="showLiveToast('API rate limit hit. Wait 60s.', 'error')">Error Toast</button>
+        </div>
+        <div class="demo-block__label">tw-toast · tw-toast--info · tw-toast--success · tw-toast--error</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Keyboard keys -->
+    <div class="section" id="kbd">
+      <div class="section-title">Keyboard Keys</div>
+      <div class="section-desc">For shortcut hints in UI. Elevated bg with bottom border for physical key feel.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="align-items:center; gap:16px;">
+          <span style="font-size:13px; color:var(--tw-text-secondary);">Export</span>
+          <kbd class="tw-kbd">Ctrl</kbd>
+          <span style="color:var(--tw-text-disabled);">+</span>
+          <kbd class="tw-kbd">E</kbd>
+
+          <span style="color:var(--tw-border-strong);">|</span>
+
+          <span style="font-size:13px; color:var(--tw-text-secondary);">Close</span>
+          <kbd class="tw-kbd">Esc</kbd>
+
+          <span style="color:var(--tw-border-strong);">|</span>
+
+          <span style="font-size:13px; color:var(--tw-text-secondary);">Navigate</span>
+          <kbd class="tw-kbd">↑</kbd>
+          <kbd class="tw-kbd">↓</kbd>
+        </div>
+        <div class="demo-block__label">tw-kbd</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Code block -->
+    <div class="section" id="code">
+      <div class="section-title">Code Block</div>
+      <div class="section-desc">For displaying script snippets, coordinates, raw data output.</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column;">
+          <div class="tw-code-block">
+<span class="cmt">// TWscripts — Dynamic Groups Exporter</span>
+<span class="kw">const</span> groups = <span class="kw">await</span> <span class="fn">fetchGroups</span>(<span class="str">'all'</span>);
+<span class="kw">const</span> csv = groups
+  .<span class="fn">filter</span>(g => g.villages.length > <span class="num">0</span>)
+  .<span class="fn">map</span>(g => <span class="fn">formatRow</span>(g))
+  .<span class="fn">join</span>(<span class="str">'\n'</span>);
+
+<span class="fn">showToast</span>(<span class="str">`Exported ${groups.length} groups`</span>, <span class="str">'success'</span>);
+          </div>
+        </div>
+        <div class="demo-block__label">tw-code-block · syntax highlight via .kw .str .fn .cmt .num</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Toggles & Checkboxes -->
+    <div class="section" id="toggles">
+      <div class="section-title">Toggles & Checkboxes</div>
+
+      <div class="demo-block">
+        <div class="demo-block__preview demo-block--dark" style="flex-direction:column; gap:6px; align-items:flex-start; max-width:340px;">
+          <label class="tw-checkbox-row">
+            <input type="checkbox" class="tw-checkbox" checked>
+            Include offline villages
+          </label>
+          <label class="tw-checkbox-row">
+            <input type="checkbox" class="tw-checkbox">
+            Filter by minimum points
+          </label>
+          <label class="tw-checkbox-row">
+            <input type="checkbox" class="tw-checkbox" checked>
+            Auto-export on sync
+          </label>
+          <div class="tw-divider"></div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <label class="tw-toggle">
+              <input type="checkbox" checked>
+              <div class="tw-toggle-track"></div>
+            </label>
+            <span style="font-size:13px;">Auto-sync enabled</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <label class="tw-toggle">
+              <input type="checkbox">
+              <div class="tw-toggle-track"></div>
+            </label>
+            <span style="font-size:13px; color:var(--tw-text-secondary);">Debug mode</span>
+          </div>
+        </div>
+        <div class="demo-block__label">tw-checkbox · tw-toggle · tw-toggle-track</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Injection guide -->
+    <div class="section" id="injection">
+      <div class="section-title">In-Game Injection</div>
+      <div class="section-desc">All UI must live inside <code style="font-family:var(--tw-font-mono); font-size:12px; background:var(--tw-bg-elevated); padding:2px 6px; border-radius:3px;">.twscripts-root</code> to scope styles away from TW game CSS.</div>
+
+      <div class="tw-code-block" style="margin-bottom:12px;">
+<span class="cmt">// 1. Include inject.js in your script (inline or userscript @require)</span>
+<span class="cmt">// 2. Call at top of your script:</span>
+<span class="fn">injectStyles</span>(); <span class="cmt">// safe to call multiple times — idempotent</span>
+
+<span class="cmt">// 3. Create scoped root:</span>
+<span class="kw">const</span> panel = <span class="fn">createRoot</span>(<span class="str">'my-script-panel'</span>);
+panel.style.cssText = <span class="str">'position:fixed;top:60px;right:16px;z-index:8000;width:360px;'</span>;
+panel.innerHTML = <span class="str">`
+  &lt;div class="tw-panel tw-panel--accent"&gt;
+    &lt;div class="tw-heading" style="font-size:16px;margin-bottom:12px;"&gt;
+      Dynamic Groups
+    &lt;/div&gt;
+    &lt;button class="tw-btn tw-btn--primary"&gt;Export CSV&lt;/button&gt;
+  &lt;/div&gt;
+`</span>;
+document.body.<span class="fn">appendChild</span>(panel);
+
+<span class="cmt">// 4. Toast from anywhere:</span>
+<span class="fn">showToast</span>(<span class="str">'Export complete — 142 villages'</span>, <span class="str">'success'</span>);
+      </div>
+
+      <div class="tw-panel tw-panel--amber">
+        <div class="tw-panel__title" style="font-family:var(--tw-font-heading); font-weight:600; margin-bottom:4px; color:var(--tw-amber);">CSS Isolation Rule</div>
+        <div class="tw-panel__body">Never apply tw-* classes outside <code style="font-family:var(--tw-font-mono); font-size:11px; background:var(--tw-bg-base); padding:1px 5px; border-radius:2px;">.twscripts-root</code>. The root wrapper resets font, line-height, and box-sizing without touching game elements.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Live Modal -->
+<div class="modal-overlay" id="demo-modal" onclick="if(event.target===this) this.classList.remove('show')">
+  <div class="tw-modal">
+    <div class="tw-modal__header">
+      Export Configuration
+      <button class="tw-modal__close" onclick="document.getElementById('demo-modal').classList.remove('show')">✕</button>
+    </div>
+    <div class="tw-modal__body">
+      Select export format and destination. This will generate a file with all village data from the selected groups.
+    </div>
+    <div class="flex-col" style="margin-bottom:20px;">
+      <div class="tw-form-group">
+        <label class="tw-label">Format</label>
+        <select class="tw-select">
+          <option>CSV (.csv)</option>
+          <option>JSON (.json)</option>
+          <option>BBCode (forum)</option>
+        </select>
+      </div>
+    </div>
+    <div class="tw-modal__footer">
+      <button class="tw-btn tw-btn--ghost" onclick="document.getElementById('demo-modal').classList.remove('show')">Cancel</button>
+      <button class="tw-btn tw-btn--primary" onclick="document.getElementById('demo-modal').classList.remove('show'); showLiveToast('Export complete — 142 villages.', 'success')">Export</button>
+    </div>
+  </div>
+</div>
+
+<!-- Live Toast -->
+<div class="live-toast" id="live-toast"></div>
+
+<script>
+  let toastTimer;
+  function showLiveToast(msg, type) {
+    const t = document.getElementById('live-toast');
+    t.className = 'live-toast show live-toast--' + type;
+    const icons = {
+      info: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-accent)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      success: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',
+      error: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tw-danger)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+    };
+    t.innerHTML = (icons[type] || '') + msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // Sidebar active state on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const links = document.querySelectorAll('.sidebar a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px -50% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

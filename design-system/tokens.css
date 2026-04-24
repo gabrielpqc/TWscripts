@@ -1,0 +1,276 @@
+/* TWscripts Design System — CSS Tokens
+ * Scope under .twscripts-root to avoid TW game style conflicts
+ */
+
+.twscripts-root {
+  /* ── Backgrounds ──────────────────────────── */
+  --tw-bg-base:         #090D18;
+  --tw-bg-surface:      #111827;
+  --tw-bg-elevated:     #1C2333;
+  --tw-bg-hover:        #243048;
+
+  /* ── Accents ──────────────────────────────── */
+  --tw-accent:          #00C8FF;
+  --tw-accent-dim:      #0A8EBF;
+  --tw-amber:           #F59E0B;
+  --tw-amber-dim:       #92600A;
+
+  /* ── Text ─────────────────────────────────── */
+  --tw-text-primary:    #E8EDF5;
+  --tw-text-secondary:  #8899BB;
+  --tw-text-disabled:   #4A5568;
+
+  /* ── Borders ──────────────────────────────── */
+  --tw-border:          #2A3550;
+  --tw-border-strong:   #3D4F72;
+
+  /* ── Semantic ─────────────────────────────── */
+  --tw-success:         #22C55E;
+  --tw-danger:          #EF4444;
+  --tw-danger-dim:      #7F1D1D;
+
+  /* ── Typography ───────────────────────────── */
+  --tw-font-heading:    'Space Grotesk', system-ui, sans-serif;
+  --tw-font-body:       'IBM Plex Sans', system-ui, sans-serif;
+  --tw-font-mono:       'JetBrains Mono', 'Fira Code', monospace;
+
+  --tw-text-xs:         11px;
+  --tw-text-sm:         13px;
+  --tw-text-base:       14px;
+  --tw-text-md:         16px;
+  --tw-text-lg:         20px;
+  --tw-text-xl:         24px;
+  --tw-text-2xl:        32px;
+
+  /* ── Spacing ──────────────────────────────── */
+  --tw-space-1:         4px;
+  --tw-space-2:         8px;
+  --tw-space-3:         12px;
+  --tw-space-4:         16px;
+  --tw-space-6:         24px;
+  --tw-space-8:         32px;
+
+  /* ── Shape ────────────────────────────────── */
+  --tw-radius-sm:       3px;
+  --tw-radius:          6px;
+  --tw-radius-lg:       10px;
+
+  /* ── Shadows ──────────────────────────────── */
+  --tw-shadow-sm:       0 1px 3px rgba(0,0,0,0.4);
+  --tw-shadow:          0 4px 12px rgba(0,0,0,0.5);
+  --tw-shadow-lg:       0 8px 24px rgba(0,0,0,0.6);
+  --tw-glow-cyan:       0 0 12px rgba(0, 200, 255, 0.25);
+  --tw-glow-amber:      0 0 12px rgba(245, 158, 11, 0.25);
+
+  /* ── Motion ───────────────────────────────── */
+  --tw-transition:      150ms ease;
+  --tw-transition-slow: 200ms ease;
+}
+
+/* ── Base Reset (scoped) ────────────────────── */
+.twscripts-root * {
+  box-sizing: border-box;
+}
+.twscripts-root {
+  font-family: var(--tw-font-body);
+  font-size: var(--tw-text-base);
+  color: var(--tw-text-primary);
+  line-height: 1.5;
+  background: var(--tw-bg-base);
+}
+
+/* ── Panel ──────────────────────────────────── */
+.twscripts-root .tw-panel {
+  background: var(--tw-bg-surface);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius);
+  padding: var(--tw-space-4);
+}
+.twscripts-root .tw-panel--accent {
+  border-left: 3px solid var(--tw-accent);
+}
+.twscripts-root .tw-panel--amber {
+  border-left: 3px solid var(--tw-amber);
+}
+
+/* ── Buttons ────────────────────────────────── */
+.twscripts-root .tw-btn {
+  font-family: var(--tw-font-body);
+  font-size: var(--tw-text-sm);
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--tw-radius-sm);
+  cursor: pointer;
+  transition: all var(--tw-transition);
+  border: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tw-space-2);
+}
+.twscripts-root .tw-btn--primary {
+  background: var(--tw-accent);
+  color: #000;
+}
+.twscripts-root .tw-btn--primary:hover {
+  background: #1AD6FF;
+  box-shadow: var(--tw-glow-cyan);
+}
+.twscripts-root .tw-btn--primary:active {
+  transform: scale(0.97);
+}
+.twscripts-root .tw-btn--ghost {
+  background: transparent;
+  color: var(--tw-text-secondary);
+  border: 1px solid var(--tw-border);
+}
+.twscripts-root .tw-btn--ghost:hover {
+  border-color: var(--tw-accent-dim);
+  color: var(--tw-text-primary);
+}
+.twscripts-root .tw-btn--danger {
+  background: var(--tw-danger);
+  color: #fff;
+}
+.twscripts-root .tw-btn--amber {
+  background: var(--tw-amber);
+  color: #000;
+}
+.twscripts-root .tw-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Inputs ─────────────────────────────────── */
+.twscripts-root .tw-input,
+.twscripts-root .tw-select {
+  background: var(--tw-bg-elevated);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius-sm);
+  color: var(--tw-text-primary);
+  font-family: var(--tw-font-body);
+  font-size: var(--tw-text-sm);
+  padding: 6px 10px;
+  transition: border-color var(--tw-transition);
+  width: 100%;
+}
+.twscripts-root .tw-input:focus,
+.twscripts-root .tw-select:focus {
+  outline: none;
+  border-color: var(--tw-accent-dim);
+  box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.12);
+}
+
+/* ── Table ──────────────────────────────────── */
+.twscripts-root .tw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--tw-text-sm);
+}
+.twscripts-root .tw-table th {
+  font-family: var(--tw-font-heading);
+  font-size: var(--tw-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tw-accent);
+  border-bottom: 1px solid var(--tw-border);
+  padding: var(--tw-space-2) var(--tw-space-3);
+  text-align: left;
+}
+.twscripts-root .tw-table td {
+  padding: var(--tw-space-2) var(--tw-space-3);
+  border-bottom: 1px solid var(--tw-border);
+}
+.twscripts-root .tw-table tr:hover td {
+  background: var(--tw-bg-hover);
+}
+
+/* ── Badges ─────────────────────────────────── */
+.twscripts-root .tw-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--tw-text-xs);
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: var(--tw-font-mono);
+}
+.twscripts-root .tw-badge--cyan  { background: rgba(0,200,255,0.12); color: var(--tw-accent);   border: 1px solid rgba(0,200,255,0.2); }
+.twscripts-root .tw-badge--amber { background: rgba(245,158,11,0.12); color: var(--tw-amber);    border: 1px solid rgba(245,158,11,0.2); }
+.twscripts-root .tw-badge--green { background: rgba(34,197,94,0.12);  color: var(--tw-success);  border: 1px solid rgba(34,197,94,0.2); }
+.twscripts-root .tw-badge--red   { background: rgba(239,68,68,0.12);  color: var(--tw-danger);   border: 1px solid rgba(239,68,68,0.2); }
+
+/* ── Divider ────────────────────────────────── */
+.twscripts-root .tw-divider {
+  border: none;
+  border-top: 1px solid var(--tw-border);
+  margin: var(--tw-space-4) 0;
+}
+
+/* ── Modal ──────────────────────────────────── */
+.twscripts-root .tw-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.twscripts-root .tw-modal {
+  background: var(--tw-bg-surface);
+  border: 1px solid var(--tw-border-strong);
+  border-radius: var(--tw-radius-lg);
+  padding: var(--tw-space-6);
+  min-width: 320px;
+  max-width: 560px;
+  box-shadow: var(--tw-shadow-lg);
+}
+.twscripts-root .tw-modal__header {
+  font-family: var(--tw-font-heading);
+  font-size: var(--tw-text-md);
+  font-weight: 600;
+  margin-bottom: var(--tw-space-4);
+  padding-bottom: var(--tw-space-3);
+  border-bottom: 1px solid var(--tw-border);
+}
+
+/* ── Toast ──────────────────────────────────── */
+.twscripts-root .tw-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--tw-bg-elevated);
+  border: 1px solid var(--tw-border-strong);
+  border-radius: var(--tw-radius);
+  padding: var(--tw-space-3) var(--tw-space-4);
+  font-size: var(--tw-text-sm);
+  box-shadow: var(--tw-shadow-lg);
+  z-index: 9999;
+  animation: tw-slide-in 200ms ease;
+}
+.twscripts-root .tw-toast--success { border-left: 3px solid var(--tw-success); }
+.twscripts-root .tw-toast--error   { border-left: 3px solid var(--tw-danger); }
+.twscripts-root .tw-toast--info    { border-left: 3px solid var(--tw-accent); }
+
+@keyframes tw-slide-in {
+  from { transform: translateX(20px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── Mono text utility ──────────────────────── */
+.twscripts-root .tw-mono {
+  font-family: var(--tw-font-mono);
+  font-size: var(--tw-text-xs);
+  color: var(--tw-text-secondary);
+}
+
+/* ── Text utilities ─────────────────────────── */
+.twscripts-root .tw-text-accent   { color: var(--tw-accent); }
+.twscripts-root .tw-text-amber    { color: var(--tw-amber); }
+.twscripts-root .tw-text-muted    { color: var(--tw-text-secondary); }
+.twscripts-root .tw-text-success  { color: var(--tw-success); }
+.twscripts-root .tw-text-danger   { color: var(--tw-danger); }
+.twscripts-root .tw-heading       { font-family: var(--tw-font-heading); font-weight: 600; }
