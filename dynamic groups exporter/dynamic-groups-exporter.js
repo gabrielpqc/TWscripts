@@ -164,32 +164,62 @@
     }
 
     // ── UI ──────────────────────────────────────────────────────────────────
-    const TA = `width:100%;height:80px;font-size:10px;resize:vertical;box-sizing:border-box;margin-bottom:5px;font-family:monospace;`;
+    if (!document.getElementById('twscripts-fonts')) {
+        const link = document.createElement('link');
+        link.id = 'twscripts-fonts';
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap';
+        document.head.appendChild(link);
+    }
+    if (!document.getElementById('twscripts-tokens')) {
+        const s = document.createElement('style');
+        s.id = 'twscripts-tokens';
+        s.textContent = `
+.twscripts-root{--tw-bg-surface:#111827;--tw-bg-elevated:#1C2333;--tw-bg-hover:#243048;--tw-accent:#00C8FF;--tw-accent-dim:#0A8EBF;--tw-text-primary:#E8EDF5;--tw-text-secondary:#8899BB;--tw-border:#2A3550;--tw-border-strong:#3D4F72;--tw-success:#22C55E;--tw-danger:#EF4444;--tw-font-heading:'Space Grotesk',system-ui,sans-serif;--tw-font-body:'IBM Plex Sans',system-ui,sans-serif;--tw-font-mono:'JetBrains Mono','Fira Code',monospace;--tw-glow-cyan:0 0 12px rgba(0,200,255,.25);}
+.twscripts-root *{box-sizing:border-box;}
+.twscripts-root .tw-panel{background:var(--tw-bg-surface);border:1px solid var(--tw-border);border-radius:6px;padding:14px;font-family:var(--tw-font-body);font-size:13px;color:var(--tw-text-primary);}
+.twscripts-root .tw-panel--accent{border-left:3px solid var(--tw-accent);}
+.twscripts-root .tw-heading{font-family:var(--tw-font-heading);font-weight:600;color:var(--tw-text-primary);}
+.twscripts-root .tw-label{font-family:var(--tw-font-heading);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--tw-text-secondary);display:block;}
+.twscripts-root .tw-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 6px;border-radius:3px;font-family:var(--tw-font-mono);}
+.twscripts-root .tw-badge--cyan{background:rgba(0,200,255,.12);color:var(--tw-accent);border:1px solid rgba(0,200,255,.2);}
+.twscripts-root .tw-btn{font-family:var(--tw-font-body);font-size:12px;font-weight:500;padding:6px 12px;border-radius:3px;cursor:pointer;transition:all 150ms ease;border:none;outline:none;display:inline-flex;align-items:center;gap:5px;line-height:1.4;}
+.twscripts-root .tw-btn--primary{background:var(--tw-accent);color:#000;}
+.twscripts-root .tw-btn--primary:hover:not(:disabled){background:#1AD6FF;box-shadow:var(--tw-glow-cyan);}
+.twscripts-root .tw-btn--primary:active:not(:disabled){transform:scale(.97);}
+.twscripts-root .tw-btn--ghost{background:transparent;color:var(--tw-text-secondary);border:1px solid var(--tw-border);}
+.twscripts-root .tw-btn--ghost:hover:not(:disabled){border-color:var(--tw-accent-dim);color:var(--tw-text-primary);}
+.twscripts-root .tw-btn--sm{font-size:11px;padding:3px 8px;}
+.twscripts-root .tw-btn:disabled{opacity:.4;cursor:not-allowed;}
+.twscripts-root .tw-input{background:var(--tw-bg-elevated);border:1px solid var(--tw-border);border-radius:3px;color:var(--tw-text-primary);font-family:var(--tw-font-body);font-size:12px;padding:5px 8px;transition:border-color 150ms ease;width:100%;display:block;}
+.twscripts-root .tw-input:focus{outline:none;border-color:var(--tw-accent-dim);box-shadow:0 0 0 2px rgba(0,200,255,.1);}
+.twscripts-root .tw-input::placeholder{color:var(--tw-text-secondary);opacity:.6;}
+.twscripts-root textarea.tw-input{resize:vertical;line-height:1.5;}
+.twscripts-root .tw-divider{border:none;border-top:1px solid var(--tw-border);margin:10px 0;}
+        `;
+        document.head.appendChild(s);
+    }
 
     const panel = document.createElement('div');
-    panel.style.cssText = `
-        position:fixed;top:80px;right:10px;z-index:9999;
-        background:#f0e0b0;border:2px solid #7d5a1e;border-radius:4px;
-        padding:10px 12px;min-width:220px;max-width:260px;
-        font:12px/1.5 sans-serif;box-shadow:2px 2px 6px rgba(0,0,0,.4);
-    `;
+    panel.className = 'twscripts-root';
+    panel.style.cssText = 'position:fixed;top:80px;right:10px;z-index:9999;width:260px;';
     panel.innerHTML = `
-        <b style="display:block;text-align:center;color:#603000;margin-bottom:8px">Group Config</b>
-        <button id="gc-export" style="width:100%;margin-bottom:5px;cursor:pointer">Export All Groups</button>
-        <div style="display:none;position:relative;margin-bottom:5px" id="gc-export-wrap">
-            <textarea id="gc-export-area" style="${TA}margin-bottom:0;padding-right:56px" readonly></textarea>
-            <button id="gc-copy" title="Copy" style="
-                position:absolute;top:4px;right:4px;padding:2px 7px;
-                cursor:pointer;font-size:11px;line-height:1.4;
-            ">Copy</button>
+        <div class="tw-panel tw-panel--accent">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <span class="tw-heading" style="font-size:14px;">Group Config</span>
+                <span class="tw-badge tw-badge--cyan">Dynamic</span>
+            </div>
+            <button id="gc-export" class="tw-btn tw-btn--primary" style="width:100%;justify-content:center;margin-bottom:8px;">Export All Groups</button>
+            <div id="gc-export-wrap" style="display:none;margin-bottom:8px;position:relative;">
+                <textarea id="gc-export-area" class="tw-input" style="height:80px;padding-right:52px;font-family:var(--tw-font-mono);font-size:11px;" readonly></textarea>
+                <button id="gc-copy" class="tw-btn tw-btn--ghost tw-btn--sm" style="position:absolute;top:4px;right:4px;">Copy</button>
+            </div>
+            <div class="tw-divider"></div>
+            <label class="tw-label" style="margin-bottom:6px;">Import (paste JSON)</label>
+            <textarea id="gc-import-area" class="tw-input" placeholder="Paste JSON here…" style="height:72px;font-family:var(--tw-font-mono);font-size:11px;margin-bottom:8px;"></textarea>
+            <button id="gc-import" class="tw-btn tw-btn--ghost" disabled style="width:100%;justify-content:center;">Import Groups</button>
+            <div id="gc-status" style="margin-top:8px;font-size:11px;color:var(--tw-text-secondary);word-break:break-word;min-height:14px;"></div>
         </div>
-        <hr style="border:none;border-top:1px solid #7d5a1e;margin:6px 0">
-        <div style="color:#603000;margin-bottom:3px">Import (paste JSON):</div>
-        <textarea id="gc-import-area" placeholder="Paste JSON here…" style="${TA}"></textarea>
-        <button id="gc-import" disabled
-            style="width:100%;cursor:pointer;opacity:.5">Import Groups</button>
-        <div id="gc-status"
-            style="margin-top:6px;color:#444;font-size:11px;word-break:break-word;min-height:14px"></div>
     `;
     document.body.appendChild(panel);
 
@@ -206,12 +236,10 @@
         try {
             pending = JSON.parse(str);
             importBtn.disabled = false;
-            importBtn.style.opacity = '1';
             statusEl.textContent = `${pending.length} group(s) ready.`;
         } catch {
             pending = null;
             importBtn.disabled = true;
-            importBtn.style.opacity = '.5';
             statusEl.textContent = 'Invalid JSON.';
         }
     }
@@ -229,7 +257,6 @@
         else {
             pending = null;
             importBtn.disabled = true;
-            importBtn.style.opacity = '.5';
             statusEl.textContent = '';
         }
     });
@@ -250,7 +277,6 @@
         if (!pending) return;
         if (!confirm(`Import ${pending.length} group(s)?\nExisting groups with matching names will be deleted and recreated.`)) return;
         importBtn.disabled = true;
-        importBtn.style.opacity = '.5';
         try { await doImport(pending, statusEl); }
         catch (e) { statusEl.textContent = 'Import error: ' + e.message; }
     });
