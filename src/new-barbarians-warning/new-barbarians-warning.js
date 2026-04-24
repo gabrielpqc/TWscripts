@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name         TW Barbarian Finder (30-field radius (changeable))
-// @author       Average Joe
-// @namespace    tribalwars.barbs
-// @version      1.2
-// @description  Find barbarian villages in a 30-field radius, store in localStorage, and popup new ones
-// @match        https://*/game.php*screen=map*
-// @grant        none
-// ==/UserScript==
-
 (function () {
     'use strict';
 
