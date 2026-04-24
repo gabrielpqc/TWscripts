@@ -5,7 +5,7 @@
 
     // --- Helpers ---
     const hasGameData = () => game_data.village !== undefined;
-    const worldKey = () => (hasGameData() && game_data.world) || window.location.host.split('.')[0];
+    const worldKey = () => (hasGameData() && game_data.world) || location.host.split('.')[0];
 
     function decodeCoordsFromKey(key) {
         const xy = parseInt(key, 10);
@@ -22,7 +22,7 @@
     // - Object: { "480533": { ... }, "480534": { ... } }
     // - Array of keyed objects: [ { "480533": { ... } }, { "480534": { ... } } ]
     function forEachVillage(cb) {
-        const src = window.TWMap && TWMap.villages;
+        const src = TWMap && TWMap.villages;
         if (!src) return;
 
         if (Array.isArray(src)) {
