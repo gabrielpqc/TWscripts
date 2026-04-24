@@ -4,7 +4,7 @@
     const RADIUS = 30;
 
     // --- Helpers ---
-    const hasGameData = () => typeof window.game_data !== 'undefined' && game_data.village;
+    const hasGameData = () => game_data.village !== undefined;
     const worldKey = () => (hasGameData() && game_data.world) || window.location.host.split('.')[0];
 
     function decodeCoordsFromKey(key) {
