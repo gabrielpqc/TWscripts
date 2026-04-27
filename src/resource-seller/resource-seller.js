@@ -30,6 +30,14 @@
         };
     }
 
+    function getVillageStock() {
+        const stock = {};
+        for (const res of ['wood', 'stone', 'iron']) {
+            stock[res] = parseNum(document.getElementById(res));
+        }
+        return stock;
+    }
+
     function getResourceInfo() {
         return ['wood', 'stone', 'iron'].map(res => ({
             res,
@@ -71,17 +79,18 @@
     async function checkAndSell(statusEl, runBtn) {
         const merchants = getMerchantInfo();
         const resources = getResourceInfo();
+        const villageStock = getVillageStock();
         const totalTransport = merchants.available * merchants.maxTransport;
 
         updateStatus(statusEl, `Merchants: ${merchants.available}/${merchants.total} · Transport: ${totalTransport.toLocaleString()}`);
 
         const sellAmounts = {};
         for (const { res, remaining } of resources) {
-            if (remaining < config.MIN_REMAINING_CAPACITY) {
+            if (villageStock[res] <= 0 || remaining < config.MIN_REMAINING_CAPACITY) {
                 sellAmounts[res] = 0;
                 continue;
             }
-            sellAmounts[res] = Math.floor(remaining * config.SELL_PERCENTAGE);
+            sellAmounts[res] = Math.min(Math.floor(remaining * config.SELL_PERCENTAGE), villageStock[res]);
         }
 
         if (config.USE_MERCHANT_LIMIT && totalTransport > 0) {
@@ -283,6 +292,10 @@
     panel.querySelector('#resource-seller-enabled').addEventListener('change', () => {
         saveConfig();
         updateStatus(statusEl, config.ENABLED ? 'Enabled.' : 'Disabled.');
+    });
+
+    panel.querySelector('#resource-seller-merchant-limit').addEventListener('change', () => {
+        saveConfig();
     });
 
     runBtn.addEventListener('click', async () => {
