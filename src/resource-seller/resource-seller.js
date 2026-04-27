@@ -14,7 +14,8 @@
         ENABLED: false
     };
 
-    const _stored = localStorage.getItem('sellerConfig');
+    const _ls = (typeof unsafeWindow !== 'undefined' ? unsafeWindow : window).localStorage;
+    const _stored = _ls.getItem('sellerConfig');
     let config = Object.assign({}, DEFAULT_CONFIG, _stored ? JSON.parse(_stored) : {});
     let reloadInterval;
 
@@ -152,7 +153,7 @@
             RANDOM_INTERVAL_MIN: parseInt(document.getElementById('resource-seller-rnd-min').value),
             RANDOM_INTERVAL_MAX: parseInt(document.getElementById('resource-seller-rnd-max').value),
         };
-        localStorage.setItem('sellerConfig', JSON.stringify(config));
+        _ls.setItem('sellerConfig', JSON.stringify(config));
         restartIntervals();
         const saved = document.getElementById('resource-seller-saved');
         if (saved) { saved.style.display = 'block'; setTimeout(() => saved.style.display = 'none', 2000); }
@@ -218,7 +219,7 @@
         <div class="tw-panel tw-panel--accent">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
                 <span class="tw-heading" style="font-size:14px;">Resource Seller</span>
-                <span class="tw-badge tw-badge--cyan">v1.0</span>
+                <span class="tw-badge tw-badge--cyan">v1.4</span>
             </div>
 
             <div id="resource-seller-market-info" class="tw-res-bar">
