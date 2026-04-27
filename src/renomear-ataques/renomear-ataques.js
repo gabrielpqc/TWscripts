@@ -3,7 +3,7 @@
 
     const webhookURL = 'https://discord.com/api/webhooks/1446457472431685745/JK9pWwm3bv4B3Jx8d54R4mLs_HVTASviUHQM--8cWLvCBPiOYY3NdLJwM5IZyqlKEyE2';
 
-    // ── Style #etiq-mass-header ──────────────────────────────────────────────
+    // ── Style #etiq-mass-header + sibling th ────────────────────────────────
     if (!document.getElementById('renomear-ataques-styles')) {
         const s = document.createElement('style');
         s.id = 'renomear-ataques-styles';
@@ -15,28 +15,35 @@
 #etiq-mass-header > * {
     color: #E8EDF5 !important;
 }
-#etiq-tag-untagged-btn {
+#etiq-filter-toggle {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
     font-size: 11px;
     font-weight: 500;
     padding: 3px 8px;
     border-radius: 3px;
     cursor: pointer;
-    border: none;
     outline: none;
+    transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+    display: inline-block;
+}
+#etiq-filter-toggle.off {
+    background: transparent;
+    color: #8899BB;
+    border: 1px solid #2A3550;
+}
+#etiq-filter-toggle.on {
     background: #00C8FF;
     color: #000;
-    margin-left: 6px;
-    vertical-align: middle;
-    transition: background 150ms ease;
+    border: 1px solid #00C8FF;
 }
-#etiq-tag-untagged-btn:hover { background: #1AD6FF; }
-#etiq-tag-untagged-btn:disabled { opacity: .4; cursor: not-allowed; }
+#etiq-filter-toggle.off:hover { border-color: #0A8EBF; color: #E8EDF5; }
+#etiq-filter-toggle.on:hover  { background: #1AD6FF; }
         `;
         document.head.appendChild(s);
     }
 
     // ── Core logic ──────────────────────────────────────────────────────────
+    let filterMode = localStorage.getItem('etiq-filter-mode') === 'true';
     let originCounts = {};
 
     function hasUnknowns() {
@@ -58,17 +65,25 @@
     }
 
     function checkNameCommands() {
-        const names = document.querySelectorAll('.quickedit-label');
-        let containsAtaque = false;
-        for (let i = 0; i < names.length; i++) {
-            if (names[i].textContent.includes('Ataque')) {
+        if (filterMode) {
+            // Only tag attacks still carrying the default "Ataque" label
+            if (countUntagged() > 0) {
                 etiquetar();
-                containsAtaque = true;
-                break;
+            } else {
+                calcularEAtualizarQuantidadeAtaques();
             }
-        }
-        if (!containsAtaque) {
-            calcularEAtualizarQuantidadeAtaques();
+        } else {
+            // Original: tag all if any untagged exists
+            const names = document.querySelectorAll('.quickedit-label');
+            let containsAtaque = false;
+            for (let i = 0; i < names.length; i++) {
+                if (names[i].textContent.includes('Ataque')) {
+                    etiquetar();
+                    containsAtaque = true;
+                    break;
+                }
+            }
+            if (!containsAtaque) calcularEAtualizarQuantidadeAtaques();
         }
     }
 
@@ -122,35 +137,50 @@
         check();
     })();
 
-    // ── Inject "Tag untagged" button into #etiq-mass-header ─────────────────
-    function injectTagUntaggedButton() {
+    // ── Inject toggle button into sibling <th> of #etiq-mass-header ─────────
+    function injectFilterToggle() {
         const header = document.getElementById('etiq-mass-header');
-        if (!header || document.getElementById('etiq-tag-untagged-btn')) return;
+        if (!header || document.getElementById('etiq-filter-toggle')) return;
+
+        const headerCell = header.tagName === 'TH' || header.tagName === 'TD'
+            ? header
+            : header.closest('th, td');
+        const siblingTh = headerCell?.nextElementSibling;
+
+        if (!siblingTh) return;
+
+        // Style the sibling th
+        siblingTh.style.setProperty('background', '#111827', 'important');
+        siblingTh.style.setProperty('color', '#E8EDF5', 'important');
 
         const btn = document.createElement('button');
-        btn.id = 'etiq-tag-untagged-btn';
-        btn.textContent = 'Tag sem etiqueta';
-        btn.title = 'Apenas etiqueta ataques com nome "Ataque" (sem etiqueta personalizada)';
+        btn.id = 'etiq-filter-toggle';
+
+        function syncBtn() {
+            btn.className = filterMode ? 'on' : 'off';
+            btn.textContent = filterMode ? 'Só sem etiqueta: ON' : 'Só sem etiqueta: OFF';
+            btn.title = filterMode
+                ? 'Modo filtro ativo — só etiqueta ataques sem nome personalizado'
+                : 'Modo normal — etiqueta todos os ataques';
+        }
 
         btn.addEventListener('click', () => {
-            const untaggedCount = countUntagged();
-            if (untaggedCount > 0) {
-                etiquetar();
-            } else {
-                UI.InfoMessage('Sem ataques por etiquetar!');
-            }
+            filterMode = !filterMode;
+            localStorage.setItem('etiq-filter-mode', filterMode);
+            syncBtn();
         });
 
-        header.appendChild(btn);
+        syncBtn();
+        siblingTh.appendChild(btn);
     }
 
     const headerObserver = new MutationObserver(() => {
         if (document.getElementById('etiq-mass-header')) {
-            injectTagUntaggedButton();
+            injectFilterToggle();
         }
     });
     headerObserver.observe(document.body, { childList: true, subtree: true });
-    injectTagUntaggedButton();
+    injectFilterToggle();
 
     // ── Discord notifications ────────────────────────────────────────────────
     function runDiscord() {
