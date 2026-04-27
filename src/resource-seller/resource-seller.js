@@ -14,7 +14,8 @@
         ENABLED: false
     };
 
-    let config = Object.assign({}, DEFAULT_CONFIG, GM_getValue('sellerConfig', {}));
+    const _stored = localStorage.getItem('sellerConfig');
+    let config = Object.assign({}, DEFAULT_CONFIG, _stored ? JSON.parse(_stored) : {});
     let reloadInterval;
 
     // ── Helpers ─────────────────────────────────────────────────────────────
@@ -151,7 +152,7 @@
             RANDOM_INTERVAL_MIN: parseInt(document.getElementById('resource-seller-rnd-min').value),
             RANDOM_INTERVAL_MAX: parseInt(document.getElementById('resource-seller-rnd-max').value),
         };
-        GM_setValue('sellerConfig', config);
+        localStorage.setItem('sellerConfig', JSON.stringify(config));
         restartIntervals();
         const saved = document.getElementById('resource-seller-saved');
         if (saved) { saved.style.display = 'block'; setTimeout(() => saved.style.display = 'none', 2000); }
