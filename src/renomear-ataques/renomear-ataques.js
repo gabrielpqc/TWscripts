@@ -140,7 +140,7 @@
     // ── Inject toggle button into sibling <th> of #etiq-mass-header ─────────
     function injectFilterToggle() {
         const header = document.getElementById('etiq-mass-header');
-        if (!header || document.getElementById('etiq-filter-toggle')) return;
+        if (!header) return;
 
         const headerCell = header.tagName === 'TH' || header.tagName === 'TD'
             ? header
